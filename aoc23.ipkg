@@ -1,0 +1,15 @@
+package aoc23
+version = 0.1.0
+authors = "stefan-hoeck"
+brief   = "Advent of code 2023 in Idris"
+langversion >= 0.6.0
+depends = elab-util
+        , parser
+        , linear
+        , refined
+        , indexed-graph
+
+main = Main
+
+executable = hack
+sourcedir = "src"
