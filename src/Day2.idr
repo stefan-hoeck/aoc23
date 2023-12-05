@@ -1,6 +1,6 @@
-module AOC23.Day2
+module Day2
 
-import AOC23.Util
+import Util
 import Data.List1
 import Data.Morphisms
 import Data.String

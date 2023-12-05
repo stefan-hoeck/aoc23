@@ -1,4 +1,4 @@
-module AOC23.Day2b
+module Day2b
 
 import Data.Nat
 

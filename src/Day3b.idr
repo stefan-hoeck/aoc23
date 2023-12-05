@@ -1,11 +1,11 @@
-module AOC23.Day3b
+module Day3b
 
 import Data.Graph.Indexed
 import Data.List
 import Data.Vect
 import Text.Bounds
 import Text.Lex.Manual
-import AOC23.Util
+import Util
 
 %default total
 

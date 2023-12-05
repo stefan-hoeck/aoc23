@@ -1,6 +1,6 @@
-module AOC23.Day5
+module Day5
 
-import AOC23.Util
+import Util
 import Data.List
 import Data.Maybe
 import Data.Nat

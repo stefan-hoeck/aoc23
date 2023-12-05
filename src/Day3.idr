@@ -1,6 +1,6 @@
-module AOC23.Day3
+module Day3
 
-import AOC23.Util
+import Util
 import Data.String
 import Data.Vect
 

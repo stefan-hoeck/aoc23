@@ -1,6 +1,6 @@
-module AOC23.Day1
+module Day1
 
-import AOC23.Util
+import Util
 
 %default total
 

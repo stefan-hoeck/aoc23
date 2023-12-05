@@ -1,4 +1,4 @@
-module AOC23.Util
+module Util
 
 import Data.Fuel
 import Data.List1

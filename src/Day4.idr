@@ -1,9 +1,9 @@
-module AOC23.Day4
+module Day4
 
 import Data.Bits
 import Data.SortedSet
 import Data.Vect
-import AOC23.Util
+import Util
 
 %default total
 
