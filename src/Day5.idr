@@ -5,11 +5,18 @@ import Data.List
 import Data.Maybe
 import Data.Nat
 
+%default total
+
 record Mapping where
   constructor M
   src : Nat
   dst : Nat
   len : Nat
+
+data Rem : Type where
+  Fst  : Mapping -> Rem
+  None : Rem
+  Lst  : Mapping -> Rem
 
 check : Mapping -> Maybe Mapping
 check m = if m.len == 0 then Nothing else Just m
@@ -19,24 +26,39 @@ drop n (M s d l) = M (s+n) (d+n) (l `minus` n)
 
 splitAt : Nat -> Mapping -> (Mapping,Maybe Mapping)
 splitAt n m =
-  ( M m.src m.dst (min m.len n)
-  , check $ M (m.src+n) (m.dst+n) (m.len `minus` n)
-  )
+  (M m.src m.dst n, check $ M (m.src+n) (m.dst+n) (m.len `minus` n))
+
+splitEq : Mapping -> Mapping -> (Mapping, Rem)
+splitEq x y =
+  case compare x.len y.len of 
+    LT => (M x.src y.dst x.len, Lst $ drop x.len y)
+    EQ => (M x.src y.dst x.len, None)
+    GT => (M x.src y.dst y.len, Fst $ drop y.len x)
+
+splitMapping : Mapping -> Mapping -> (List Mapping, Rem)
+splitMapping x y =
+  case compare x.dst y.src of
+    LT => case splitAt (y.src `minus` x.dst) x of
+      (pre, Just pst) => let (x,rem) := splitEq pst y in ([pre,x],rem)
+      (pre, Nothing)  => ([pre], Lst y)
+    EQ => mapFst pure $ splitEq x y
+    GT => case splitAt (x.dst `minus` y.src) y of
+      (_,Just pst) => let (x,rem) := splitEq x pst in ([x],rem)
+      (_,Nothing)  => ([], Fst x)
+
+splitCur : Mapping -> List Mapping -> (List Mapping, List Mapping)
+splitCur x []        = ([x],[])
+splitCur x (y :: ys) =
+  case splitMapping x y of
+    (ms, Fst x') => mapFst (ms ++) (splitCur x' ys)
+    (ms, None)   => (ms, ys)
+    (ms, Lst y') => (ms, y'::ys)
 
 splitMappings : (src,dst : List Mapping) -> List Mapping
-splitMappings s@(x :: xs) d@(y::ys) =
-  case compare x.dst y.src of
-    LT =>
-      let (pre,rem) := splitAt (y.src `minus` x.dst) x
-       in pre :: splitMappings (toList rem ++ xs) d
-    EQ => case compare x.len y.len of 
-      LT => M x.src y.dst x.len :: splitMappings xs (drop x.len y :: ys)
-      EQ => M x.src y.dst x.len :: splitMappings xs ys
-      GT => M x.src y.dst y.len :: splitMappings (drop y.len x :: xs) ys
-    GT =>
-      let (_,Just m) := splitAt (x.dst `minus` y.src) y | _ => splitMappings s ys
-       in splitMappings s (m::ys)
-splitMappings xs          _        = xs
+splitMappings xs        [] = xs
+splitMappings []        _  = []
+splitMappings (x :: xs) ys =
+  let (as,bs) := splitCur x ys in as ++ splitMappings xs bs
 
 0 Almanac : Type
 Almanac = List Mapping

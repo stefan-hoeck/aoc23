@@ -9,7 +9,4 @@ depends = elab-util
         , refined
         , indexed-graph
 
-main = Main
-
-executable = hack
 sourcedir = "src"
