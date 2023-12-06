@@ -24,9 +24,8 @@ check m = if m.len == 0 then Nothing else Just m
 drop : Nat -> Mapping -> Mapping
 drop n (M s d l) = M (s+n) (d+n) (l `minus` n)
 
-splitAt : Nat -> Mapping -> (Mapping,Maybe Mapping)
-splitAt n m =
-  (M m.src m.dst n, check $ M (m.src+n) (m.dst+n) (m.len `minus` n))
+break : Nat -> Mapping -> (Mapping,Maybe Mapping)
+break n m = (M m.src m.dst n, check $ drop n m)
 
 splitEq : Mapping -> Mapping -> (Mapping, Rem)
 splitEq x y =
@@ -38,11 +37,11 @@ splitEq x y =
 splitMapping : Mapping -> Mapping -> (List Mapping, Rem)
 splitMapping x y =
   case compare x.dst y.src of
-    LT => case splitAt (y.src `minus` x.dst) x of
+    LT => case break (y.src `minus` x.dst) x of
       (pre, Just pst) => let (x,rem) := splitEq pst y in ([pre,x],rem)
       (pre, Nothing)  => ([pre], Lst y)
     EQ => mapFst pure $ splitEq x y
-    GT => case splitAt (x.dst `minus` y.src) y of
+    GT => case break (x.dst `minus` y.src) y of
       (_,Just pst) => let (x,rem) := splitEq x pst in ([x],rem)
       (_,Nothing)  => ([], Fst x)
 
