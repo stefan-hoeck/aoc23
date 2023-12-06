@@ -17,6 +17,7 @@ t = 62649190
 d : Nat
 d = 553101014731074
 
+-- Using a closed formula from solving the quadratic equation
 closed : Nat
 closed =
   let rec := the Double $ cast d
@@ -26,20 +27,18 @@ closed =
       x2  := (tot + di) / 2
    in S (cast $ floor x2 - ceiling x1)
 
-time :
-     (res        : Nat)
-  -> (0 tot      : Nat)
-  -> (press, rec : Nat)
-  -> {auto race  : Ix press tot}
-  -> Nat
-time res tot 0     rec = res
-time res tot (S k) rec =
-  let res' := if (S k * ixToNat race > rec) then S res else res
-   in time res' tot k rec
+-- bruteforc using automatic counting upwards with
+-- `Ix` from the array library.
+brute : (tot, dist : Nat) -> Nat
+brute tot dist = go 0 tot
+  where
+    go : Nat -> (press : Nat) -> (race : Ix press tot) => Nat
+    go r 0       = r
+    go r v@(S k) = go (ifThenElse (v * ixToNat race > dist) (S r) r) k
 
 main : IO ()
 main = do
-  printLn . product $ zipWith (\t,d => time 0 t t d) times distances
-  printLn (time 0 t t d @{IZ})
+  printLn . product $ zipWith brute times distances
+  printLn (brute t d)
   printLn closed
 
