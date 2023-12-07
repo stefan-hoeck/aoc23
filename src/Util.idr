@@ -2,10 +2,30 @@ module Util
 
 import Data.Fuel
 import Data.List1
+import Data.SortedMap
 import public Data.String
 import System.File
 
 %default total
+
+export
+insertWith : Ord k => (v -> v -> v) -> k -> v -> SortedMap k v -> SortedMap k v
+insertWith f key val m =
+  case lookup key m of
+    Nothing => insert key val m
+    Just v  => insert key (f v val) m
+
+export
+fromListWith : Ord k => (v -> v -> v) -> List (k,v) -> SortedMap k v
+fromListWith f = foldl (\m,(key,val) => insertWith f key val m) empty
+
+export
+zipWithIndex : List a -> List (Nat,a)
+zipWithIndex = go [<] 0
+  where
+    go : SnocList (Nat,a) -> Nat -> List a -> List (Nat,a)
+    go sx k []        = sx <>> []
+    go sx k (x :: xs) = go (sx :< (k,x)) (S k) xs
 
 export
 trimSplit : Char -> String -> List String
