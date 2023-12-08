@@ -8,6 +8,18 @@ import System.File
 
 %default total
 
+gcd' : (a,b : Integer) -> Integer
+gcd' a 0 = a
+gcd' a b = let r := a `mod` b in gcd' b $ assert_smaller b r
+
+export
+gcd : Nat -> Nat -> Nat
+gcd a b = cast $ gcd' (cast $ max a b) (cast $ min a b)
+
+export
+lcm : Nat -> Nat -> Nat
+lcm a b = cast $ (cast {to = Integer} a * cast b) `div` cast (gcd a b)
+
 export
 insertWith : Ord k => (v -> v -> v) -> k -> v -> SortedMap k v -> SortedMap k v
 insertWith f key val m =
