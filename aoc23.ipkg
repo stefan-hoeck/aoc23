@@ -9,4 +9,20 @@ depends = elab-util
         , refined
         , indexed-graph
 
+modules = Day1
+        , Day2
+        , Day2b
+        , Day3
+        , Day3b
+        , Day4
+        , Day5
+        , Day5b
+        , Day6
+        , Day7
+
+        , Util
+
+main = Main
+
+executable = "run-aoc23"
 sourcedir = "src"

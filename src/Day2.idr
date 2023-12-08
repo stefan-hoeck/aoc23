@@ -87,9 +87,10 @@ part2 = sum . map (power . concat . subsets)
 -- Main
 --------------------------------------------------------------------------------
 
+export
 main : IO ()
 main = do
   ls <- lines "day2"
   Right gs <- pure $ traverse readGame ls | Left err => putStrLn err
-  printLn (part1 gs)
-  printLn (part2 gs)
+  putStrLn "day  2 part 1: \{show $ part1 gs}"
+  putStrLn "day  2 part 2: \{show $ part2 gs}"

@@ -36,9 +36,8 @@ brute tot dist = go 0 tot
     go r 0       = r
     go r v@(S k) = go (ifThenElse (v * ixToNat race > dist) (S r) r) k
 
+export
 main : IO ()
 main = do
-  printLn . product $ zipWith brute times distances
-  printLn (brute t d)
-  printLn closed
-
+  putStrLn "day  6 part 1: \{show . product $ zipWith brute times distances}"
+  putStrLn "day  6 part 2: \{show closed}"

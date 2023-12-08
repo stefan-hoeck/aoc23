@@ -51,8 +51,9 @@ part2 g ix =
       [N x,N y]    := map (lab g) (keys ns) | _ => 0
    in x * y
 
-run : IO ()
-run = do
+export
+main : IO ()
+main = do
   G k g <- graph <$> text "day3"
-  printLn (sum $ map (part1 g) (allFinsFast k))
-  printLn (sum $ map (part2 g) (allFinsFast k))
+  putStrLn "day  3 part 1: \{show $ sum $ map (part1 g) (allFinsFast k)}"
+  putStrLn "day  3 part 2: \{show $ sum $ map (part2 g) (allFinsFast k)}"

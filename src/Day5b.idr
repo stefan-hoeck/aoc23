@@ -85,9 +85,10 @@ p2Init : List String -> List (Mapping "seed" "seed")
 p2Init (s::l::xs) = M (V $ cast s) (V $ cast s) (V $ cast l) :: p2Init xs
 p2Init _          = []
 
+export
 main : IO ()
 main = do
   h::""::_::t  <- String.lines <$> text "day5" | _ => putStrLn "Invalid input"
   "seeds:"::ss <- pure (words h)               | _ => putStrLn "Invalid input"
-  putStrLn (solve (p1Init ss) (forget $ split (""==) t))
-  putStrLn (solve (p2Init ss) (forget $ split (""==) t))
+  putStrLn "day  5 part 1: \{solve (p1Init ss) (forget $ split (""==) t)}"
+  putStrLn "day  5 part 2: \{solve (p2Init ss) (forget $ split (""==) t)}"

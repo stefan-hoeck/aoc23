@@ -30,6 +30,7 @@ num = toNat . (>>= digit) . unpack
 num2 : String -> Nat
 num2 = toNat . digits . unpack
 
+export
 main : IO ()
 main = do
   ls <- lines "day1"

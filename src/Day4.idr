@@ -47,8 +47,9 @@ part1 = sum . map (points . readCard)
 part2 : List String -> Nat
 part2 ls = countCopies 0 $ fromList (map readCard ls)
 
+export
 main : IO ()
 main = do
   ls <- lines "day4"
-  printLn (part1 ls)
-  printLn (part2 ls)
+  putStrLn "day  4 part 1: \{show $ part1 ls}"
+  putStrLn "day  4 part 2: \{show $ part2 ls}"

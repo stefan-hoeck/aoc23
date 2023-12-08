@@ -76,9 +76,10 @@ readHand s =
       cards       := [a,b,c,d,e]
    in Right $ H (combo  a b c d e) cards (cast v)
 
+export
 main : IO ()
 main = do
   ls       <- Util.lines "day7"
   Right hs <- pure (traverse readHand ls)  | Left s => putStrLn "Invalid: \{s}"
-  printLn (solve hs)
-  printLn (solve $ map bestHand hs)
+  putStrLn "day  7 part 1: \{show $ solve hs}"
+  putStrLn "day  7 part 2: \{show $ solve $ map bestHand hs}"
