@@ -19,6 +19,7 @@ modules = Day1
         , Day5b
         , Day6
         , Day7
+        , Day8
 
         , Util
 

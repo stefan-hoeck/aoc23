@@ -7,6 +7,7 @@ import Day4
 import Day5b
 import Day6
 import Day7
+import Day8
 
 main : IO ()
 main = do
@@ -17,3 +18,4 @@ main = do
   Day5b.main
   Day6.main
   Day7.main
+  Day8.main
