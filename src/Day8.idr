@@ -68,7 +68,7 @@ pair s =
    in (a,(strSubstr 1 3 b, strSubstr 0 3 c))
 
 solve : List String -> Map -> (l : List (Nat,LR)) -> (0 _ : NonEmpty l) => Nat
-solve vs m l = foldl Util.lcm 1 $ mapMaybe (period [<] empty m (cycle l) 0) vs
+solve vs m l = foldl fastLCM 1 $ mapMaybe (period [<] empty m (cycle l) 0) vs
 
 export covering
 main : IO ()

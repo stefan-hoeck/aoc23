@@ -8,17 +8,20 @@ import System.File
 
 %default total
 
-gcd' : (a,b : Integer) -> Integer
-gcd' a 0 = a
-gcd' a b = let r := a `mod` b in gcd' b $ assert_smaller b r
+%inline
+Integral Nat where
+  div x y = cast $ cast {to = Integer} x `div` cast y
+  mod x y = cast $ cast {to = Integer} x `mod` cast y
 
 export
-gcd : Nat -> Nat -> Nat
-gcd a b = cast $ gcd' (cast $ max a b) (cast $ min a b)
+fastGCD : Nat -> Nat -> Nat
+fastGCD a 0 = a
+fastGCD 0 b = b
+fastGCD a b = let r := a `mod` b in fastGCD b $ assert_smaller b r
 
 export
-lcm : Nat -> Nat -> Nat
-lcm a b = cast $ (cast {to = Integer} a * cast b) `div` cast (gcd a b)
+fastLCM : Nat -> Nat -> Nat
+fastLCM a b = (a * b) `div` fastGCD a b
 
 export
 insertWith : Ord k => (v -> v -> v) -> k -> v -> SortedMap k v -> SortedMap k v
