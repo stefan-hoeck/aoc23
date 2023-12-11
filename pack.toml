@@ -1,0 +1,10 @@
+[custom.all.aoc23]
+type = "local"
+path = "."
+ipkg = "aoc23.ipkg"
+
+[custom.all.indexed-graph]
+type   = "git"
+url    = "git@github.com:stefan-hoeck/idris2-indexed-graph"
+commit = "latest:main"
+ipkg   = "indexed-graph.ipkg"
