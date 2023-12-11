@@ -140,6 +140,6 @@ main = do
 
   let m2 := fromList ps
 
-  putStrLn $ prettyMaze ls m2
+--  putStrLn $ prettyMaze ls m2
   putStrLn "day 10 part 1: \{show $ length ps}"
   putStrLn "day 10 part 2: \{show . sum $ solve2 ls m2}"
