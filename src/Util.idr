@@ -3,25 +3,37 @@ module Util
 import Data.Fuel
 import Data.List1
 import Data.SortedMap
-import public Data.String
+import Data.Vect
 import System.File
+import public Data.String
 
 %default total
 
-%inline
-Integral Nat where
-  div x y = cast $ cast {to = Integer} x `div` cast y
-  mod x y = cast $ cast {to = Integer} x `mod` cast y
+--------------------------------------------------------------------------------
+-- Numeric utilities
+--------------------------------------------------------------------------------
+
+export
+fastNatDiv : Nat -> Nat -> Nat
+fastNatDiv x y = cast $ cast {to = Integer} x `div` cast y
+
+export
+fastNatMod : Nat -> Nat -> Nat
+fastNatMod x y = cast $ cast {to = Integer} x `mod` cast y
 
 export
 fastGCD : Nat -> Nat -> Nat
 fastGCD a 0 = a
 fastGCD 0 b = b
-fastGCD a b = let r := a `mod` b in fastGCD b $ assert_smaller b r
+fastGCD a b = let r := a `fastNatMod` b in fastGCD b $ assert_smaller b r
 
 export
 fastLCM : Nat -> Nat -> Nat
-fastLCM a b = (a * b) `div` fastGCD a b
+fastLCM a b = (a * b) `fastNatDiv` fastGCD a b
+
+--------------------------------------------------------------------------------
+-- Map Utilities
+--------------------------------------------------------------------------------
 
 export
 insertWith : Ord k => (v -> v -> v) -> k -> v -> SortedMap k v -> SortedMap k v
@@ -42,9 +54,33 @@ zipWithIndex = go [<] 0
     go sx k []        = sx <>> []
     go sx k (x :: xs) = go (sx :< (k,x)) (S k) xs
 
+--------------------------------------------------------------------------------
+-- Parsing Utilities
+--------------------------------------------------------------------------------
+
 export
 trimSplit : Char -> String -> List String
 trimSplit c = map trim . forget . split (c ==)
+
+export %inline
+commaSep : String -> List String
+commaSep = trimSplit ','
+
+export %inline
+colonSep1 : String -> Either String (Vect 2 String)
+colonSep1 s =
+  let [a,b] := trimSplit ':' s | _ => Left "Invalid: \{s}"
+   in Right [a,b]
+
+export %inline
+prefixWord : String -> String -> Either String String
+prefixWord pre s =
+  let [p,x] := words s | _ => Left "Invalid: \{s}"
+   in if pre == p then Right x else Left "Invalid: \{s}"
+
+--------------------------------------------------------------------------------
+-- IO Utilities
+--------------------------------------------------------------------------------
 
 export
 lines : String -> IO (List String)
