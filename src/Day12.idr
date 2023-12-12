@@ -52,22 +52,9 @@ solve2 s =
       bb    := List.intersperse "," (replicate 5 b)
    in solve1 (concat $ aa ++ " " :: bb)
 
-example : String
-
 export
 main : IO ()
 main = do
-  -- ls <- pure (String.lines example)
   ls <- lines "day12"
   putStrLn "day 12 part 1: \{show . sum $ map solve1 ls}"
   putStrLn "day 12 part 2: \{show . sum $ map solve2 ls}"
-
-example =
-  """
-  ???.### 1,1,3
-  .??..??...?##. 1,1,3
-  ?#?#?#?#?#?#?#? 1,3,1,6
-  ????.#...#... 4,1,1
-  ????.######..#####. 1,6,5
-  ?###???????? 3,2,1
-  """
