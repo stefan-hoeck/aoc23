@@ -1,6 +1,3 @@
-||| ...x..xx.....x|..x...x.x.x..x
-||| ..x..xx....x|..x...x.x..
-||| ..x..xx....x..|x...x.x....
 module Day8
 
 import Data.SortedMap

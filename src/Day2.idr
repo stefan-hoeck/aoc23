@@ -52,7 +52,7 @@ possibleGame bag = all (possible bag) . subsets
 --------------------------------------------------------------------------------
 
 readSubset : String -> Subset
-readSubset s = (foldMap (val . words) (trimSplit ',' s)).applyEndo neutral
+readSubset s = (foldMap (val . words) (commaSep s)).applyEndo neutral
   where
     val : List String -> Endomorphism Subset
     val [n, "blue"]  = Endo {blue  := cast n}
@@ -61,10 +61,10 @@ readSubset s = (foldMap (val . words) (trimSplit ',' s)).applyEndo neutral
     val _            = Endo id
 
 readGame : String -> Either String Game
-readGame s =
-  let [g,ss]     := trimSplit ':' s | _ => Left "invalid input: \{s}"
-      ["Game",n] := words g         | _ => Left "invalid input: \{s}"
-   in Right . G (cast n) $ map readSubset (trimSplit ';' ss)
+readGame s = do
+  [g,ss] <- colonSep1 s
+  n      <- prefixWord "Game" g
+  pure $ G (cast n) $ map readSubset (trimSplit ';' ss)
 
 --------------------------------------------------------------------------------
 -- Part 1

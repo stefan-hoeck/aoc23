@@ -44,26 +44,9 @@ solve n (h::t) =
       ps      := chars n v
    in sum [| dist ps ps |]
 
-example : String
-
 export
 main : IO ()
 main = do
-  -- lss <- pure (map unpack $ String.lines example)
   lss <- map unpack <$> lines "day11"
   putStrLn "day 11 part 1: \{show $ solve 2 lss}"
   putStrLn "day 11 part 1: \{show $ solve 1_000_000 lss}"
-
-example =
-  """
-  ...#......
-  .......#..
-  #.........
-  ..........
-  ......#...
-  .#........
-  .........#
-  ..........
-  .......#..
-  #...#.....
-  """
